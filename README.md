@@ -5,7 +5,8 @@ A spec-based Pokémon nickname enforcer!
 Specnik is a Forge sidemod for Pixelmon that allows you to easily configure how your players are able to nickname their Pokemon.
 
 Specnik can:
-- Prevent modifying nicknames of Pokemon via a new `unnickable` spec, or any Pokemon that match any set of specs defined in the config
+- Prevent modifying nicknames of Pokemon via a new `unnickable` spec
+- Prevent modifying nicknames of Pokemon that match any set of specs defined in the config
 - Modify the players nickname input to match a specific format you define (re-formatting the players input)
     - Includes built-in placeholders for automatically populating Pokemon info (type, species, palette, form)
 - Blacklist words or phrases from being used in Pokemon nicknames with regex support

@@ -101,7 +101,6 @@ public class SpecnikConfig extends AbstractYamlConfig {
         public boolean isPlayerEditingAllowed() {
             return playerEditingAllowed;
         }
-
     }
 
     public String replacePlaceholders(String s, Pokemon p) {
