@@ -1,4 +1,4 @@
-package com.thenodemc.specnik;
+package com.thenodemc.specnik.spec;
 
 import com.google.common.collect.Sets;
 import com.pixelmonmod.api.pokemon.requirement.AbstractBooleanPokemonRequirement;

@@ -1,4 +1,4 @@
-package com.thenodemc.specnik;
+package com.thenodemc.specnik.config;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
