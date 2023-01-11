@@ -18,7 +18,7 @@ import java.util.List;
 public class SpecnikCommand extends PixelCommand {
 
     final ArrayList<String> aliases = Lists.newArrayList("specnik");
-    final ArrayList<String> tabCompletions = Lists.newArrayList("specnik");
+    final ArrayList<String> tabCompletions = Lists.newArrayList("reload");
 
     public SpecnikCommand(CommandDispatcher<CommandSource> dispatcher) {
         super(dispatcher);
