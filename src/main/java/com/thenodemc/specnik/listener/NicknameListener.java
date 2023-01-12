@@ -1,6 +1,7 @@
 package com.thenodemc.specnik.listener;
 
 import com.pixelmonmod.api.pokemon.PokemonSpecification;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.events.pokemon.SetNicknameEvent;
 import com.thenodemc.specnik.Specnik;
 import com.thenodemc.specnik.config.SpecnikConfig;
@@ -10,6 +11,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class NicknameListener {
     SpecnikConfig config = Specnik.instance.getConfig();
+
+    public NicknameListener() {
+        Pixelmon.EVENT_BUS.register(this);
+    }
 
     @SubscribeEvent
     public void onNicknameEvent(SetNicknameEvent e) {
