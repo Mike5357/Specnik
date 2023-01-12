@@ -1,6 +1,8 @@
 # Specnik
 A spec-based Pokémon nickname enforcer!
 
+![A simplistic cyan-colored satellite icon with white text on its main body spelling out the word "Specnik".](https://i.imgur.com/AO3Lmwg.png)
+
 # Summary
 Specnik is a Forge sidemod for Pixelmon that allows you to easily configure how your players are able to nickname their Pokemon.
 
