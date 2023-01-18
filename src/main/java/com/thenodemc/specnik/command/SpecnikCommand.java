@@ -2,7 +2,6 @@ package com.thenodemc.specnik.command;
 
 import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pixelmonmod.pixelmon.comm.CommandChatHandler;
 import com.pixelmonmod.pixelmon.command.PixelCommand;
 import com.thenodemc.specnik.Specnik;
@@ -17,30 +16,14 @@ import java.util.List;
 
 public class SpecnikCommand extends PixelCommand {
 
-    final ArrayList<String> aliases = Lists.newArrayList("specnik");
-    final ArrayList<String> tabCompletions = Lists.newArrayList("reload");
+    private static final ArrayList<String> TAB_COMPLETIONS = Lists.newArrayList("reload");
 
     public SpecnikCommand(CommandDispatcher<CommandSource> dispatcher) {
-        super(dispatcher);
-    }
-
-    public String getName() {
-        return "specnik";
+        super(dispatcher, "specnik",TextFormatting.RED + "/specnik reload",2);
     }
 
     @Override
-    public List<String> getAliases() {
-        return aliases;
-    }
-
-    @Override
-    public String getUsage(CommandSource icommandsender) {
-        return TextFormatting.RED + "/specnik reload";
-    }
-
-    @Override
-    public void execute(CommandSource sender, String[] args) throws CommandException, CommandSyntaxException {
-        MinecraftServer server = sender.getServer();
+    public void execute(CommandSource sender, String[] args) throws CommandException {
         if (args.length == 0) {
             CommandChatHandler.sendChat(sender, TextFormatting.RED + getUsage(sender));
         } else if (args[0].equalsIgnoreCase("reload")) {
@@ -52,8 +35,8 @@ public class SpecnikCommand extends PixelCommand {
     }
 
     @Override
-    public List<String> getTabCompletions(MinecraftServer server, CommandSource sender, String[] args, BlockPos pos) throws CommandSyntaxException {
-        return tabCompletions;
+    public List<String> getTabCompletions(MinecraftServer server, CommandSource sender, String[] args, BlockPos pos) {
+        return TAB_COMPLETIONS;
     }
 
 }
