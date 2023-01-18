@@ -4,7 +4,9 @@ import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
 import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;
 import com.thenodemc.specnik.command.SpecnikCommand;
 import com.thenodemc.specnik.config.SpecnikConfig;
+import com.thenodemc.specnik.listener.EvolveListener;
 import com.thenodemc.specnik.listener.NicknameListener;
+import com.thenodemc.specnik.listener.PokemonReceivedListener;
 import com.thenodemc.specnik.spec.UnnickableRequirement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -50,6 +52,8 @@ public class Specnik {
         instance = this;
         this.loadConfig();
         new NicknameListener();
+        new EvolveListener();
+        new PokemonReceivedListener();
         logger.info("Specnik has launched. Now handling nickname events.");
     }
 
