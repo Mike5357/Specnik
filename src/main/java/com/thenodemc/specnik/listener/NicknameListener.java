@@ -13,16 +13,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NicknameListener {
-    SpecnikConfig config;
 
     public NicknameListener() {
         Pixelmon.EVENT_BUS.register(this);
-        config = Specnik.instance.getConfig();
     }
 
     @SubscribeEvent
     public void onNicknameEvent(SetNicknameEvent e) {
-        config = Specnik.instance.getConfig();
+        SpecnikConfig config = Specnik.instance.getConfig();
         if (config.isDebug()) e.player.sendMessage(new StringTextComponent("[Debug] SetNicknameEvent Triggered! " + e.player.getName().getString() + "'s " + e.pokemon.getSpecies().getName() + " changed to: " + e.nickname), Util.NIL_UUID);
 
         if (!e.pokemon.hasFlag("unnickable")) {

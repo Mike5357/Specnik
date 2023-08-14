@@ -12,16 +12,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PokemonReceivedListener {
 
-    SpecnikConfig config;
-
     public PokemonReceivedListener() {
         Pixelmon.EVENT_BUS.register(this);
-        config = Specnik.instance.getConfig();
     }
 
     @SubscribeEvent
     public void onPokemonReceivedEvent(PokemonReceivedEvent e) {
-        config = Specnik.instance.getConfig();
+        SpecnikConfig config = Specnik.instance.getConfig();
         if (config.isDebug()) e.getPlayer().sendMessage(new StringTextComponent("[Debug] EvolveEvent Triggered for " + e.getPlayer().getName().getString() + "'s " + e.getPokemon().getSpecies().getName()), Util.NIL_UUID);
 
         for (SpecnikConfig.NicknameSetting nicknameSetting : config.getForceNicknames().values()) {

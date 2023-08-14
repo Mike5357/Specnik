@@ -1,6 +1,7 @@
 package com.thenodemc.specnik;
 
 import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;import com.pixelmonmod.pixelmon.api.events.init.PixelmonInitEvent;
 import com.thenodemc.specnik.command.SpecnikCommand;
 import com.thenodemc.specnik.config.SpecnikConfig;
@@ -29,11 +30,15 @@ public class Specnik {
     Logger logger = LogManager.getLogger("specnik");
 
     public Specnik() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        Pixelmon.EVENT_BUS.register(new NicknameListener());
+        Pixelmon.EVENT_BUS.register(new EvolveListener());
+        Pixelmon.EVENT_BUS.register(new PokemonReceivedListener());
+//        Pixelmon.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(PixelmonInitEvent event) {
+    @SubscribeEvent
+    public void setup(PixelmonInitEvent event) {
         PokemonSpecificationProxy.register(new UnnickableRequirement());
     }
 
@@ -41,19 +46,16 @@ public class Specnik {
     public void registerCommand(RegisterCommandsEvent event) {
         new SpecnikCommand(event.getDispatcher());
     }
-
-
-    @SubscribeEvent
-    public void onInit(FMLServerStartingEvent event) {
-    }
+//
+//
+//    @SubscribeEvent
+//    public void onInit(FMLServerStartingEvent event) {
+//    }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerAboutToStartEvent event) {
         instance = this;
         this.loadConfig();
-        new NicknameListener();
-        new EvolveListener();
-        new PokemonReceivedListener();
         logger.info("Specnik has launched. Now handling nickname events.");
     }
 
