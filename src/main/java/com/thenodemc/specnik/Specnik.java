@@ -1,7 +1,7 @@
 package com.thenodemc.specnik;
 
 import com.pixelmonmod.api.pokemon.PokemonSpecificationProxy;
-import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;
+import com.pixelmonmod.pixelmon.api.config.api.yaml.YamlConfigFactory;import com.pixelmonmod.pixelmon.api.events.init.PixelmonInitEvent;
 import com.thenodemc.specnik.command.SpecnikCommand;
 import com.thenodemc.specnik.config.SpecnikConfig;
 import com.thenodemc.specnik.listener.EvolveListener;
@@ -12,7 +12,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -33,7 +33,7 @@ public class Specnik {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(FMLCommonSetupEvent event) {
+    private void setup(PixelmonInitEvent event) {
         PokemonSpecificationProxy.register(new UnnickableRequirement());
     }
 
