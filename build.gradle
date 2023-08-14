@@ -21,7 +21,7 @@ minecraft {
 }
 
 group 'com.thenodemc'
-version '1.1.0'
+version '1.1.2'
 
 
 repositories {
@@ -43,7 +43,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.34'
-    implementation fg.deobf('pixelmon:Pixelmon-1.16.5-9.1.0-server:9.1.0')
+    implementation fg.deobf('pixelmon:Pixelmon-1.16.5-9.1.6-server:9.1.6')
 }
 
 tasks.withType(JavaCompile) {
