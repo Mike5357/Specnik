@@ -9,6 +9,9 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class NicknameListener {
     SpecnikConfig config;
 
@@ -25,7 +28,9 @@ public class NicknameListener {
         if (!e.pokemon.hasFlag("unnickable")) {
             for (String s : config.getNicknameBlacklist()) {
                 if (config.isDebug()) e.player.sendMessage(new StringTextComponent("Checking regex: " + s), Util.NIL_UUID);
-                if (e.nickname.matches(s)) {
+                Pattern pattern = Pattern.compile(s);
+                Matcher matcher = pattern.matcher(e.nickname);
+                if (matcher.find()) {
                     e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("nickname-blacklist-triggered").replaceAll("%nickname%", e.nickname)), Util.NIL_UUID);
                     e.setCanceled(true);
                     return;
