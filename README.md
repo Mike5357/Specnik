@@ -11,7 +11,9 @@ Specnik can:
 - Prevent modifying nicknames of Pokemon that match any set of specs defined in the config
 - Modify the players nickname input to match a specific format you define (re-formatting the players input)
     - Includes built-in placeholders for automatically populating Pokemon info (type, species, palette, form)
+    - Also allows you to define whether the nickname should be forcefully applied whenever a pokemon with the defined specs is received and/or when it evolves)
 - Blacklist words or phrases from being used in Pokemon nicknames with regex support
+- Includes a text-replacement feature, allowing you to replace any string that appears in a nickname with something else. Can be used for example to add icons in place of Pokemon typing, or to resolve custom palette, form, or species names not appearing correctly.
 
 
 # Dependencies
