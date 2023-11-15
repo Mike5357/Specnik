@@ -45,7 +45,8 @@ public class SpecnikConfig extends AbstractYamlConfig {
     private Map<String,String> langSettings = ImmutableMap.of(
         "editing-not-allowed-message","§cYou cannot edit the nickname of this Pokemon.",
         "notify-modified-message","§eYour Pokemon's name has been changed to: %nickname%",
-        "nickname-blacklist-triggered","§cThe name you entered (%nickname%) is not allowed."
+        "nickname-blacklist-triggered","§cThe name you entered (%nickname%) is not allowed.",
+        "colors-not-allowed","§cYou cannot use colors in Pokemon nicknames."
     );
 
     public SpecnikConfig() {
