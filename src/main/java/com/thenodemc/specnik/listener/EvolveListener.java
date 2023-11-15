@@ -28,7 +28,7 @@ public class EvolveListener {
                 if (config.isDebug())
                     e.getPlayer().sendMessage(new StringTextComponent("[Debug] §a✔ Pokemon matches specs: " + spec), Util.NIL_UUID);
                 if (nicknameSetting.isUpdateOnEvolve()) {
-                    e.getPokemon().setNickname(new StringTextComponent(config.replacePlaceholders(nicknameSetting.getName(), e.getPokemon()).replaceAll("%nickname%", "")));
+                    e.getPokemon().setNickname(new StringTextComponent(config.replacePlaceholders(nicknameSetting.getName(), e.getPokemon()).replaceAll("%nickname%", e.getPokemon().getSpecies().getLocalizedName())));
                     if (config.isNotifyModified())
                         e.getPlayer().sendMessage(new StringTextComponent(config.getLangSettings().get("notify-modified-message").replaceAll("%nickname%", e.getPokemon().getFormattedNickname().getString())), Util.NIL_UUID);
                 }
