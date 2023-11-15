@@ -50,6 +50,10 @@ public class NicknameListener {
                         e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("editing-not-allowed-message")), Util.NIL_UUID);
                         e.setCanceled(true);
                     }
+                    if (e.nickname.contains("&") && !PlayerHelper.hasPermission(e.player,"specnik.colors")) { // Does not work
+                        e.nickname = StringUtils.stripColor(e.nickname);
+                        e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("colors-not-allowed")), Util.NIL_UUID);
+                    }
                     return;
                 }
             }
