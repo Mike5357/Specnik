@@ -3,8 +3,10 @@ package com.thenodemc.specnik.listener;
 import com.pixelmonmod.api.pokemon.PokemonSpecification;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.events.pokemon.SetNicknameEvent;
+import com.pixelmonmod.pixelmon.api.util.helpers.PlayerHelper;
 import com.thenodemc.specnik.Specnik;
 import com.thenodemc.specnik.config.SpecnikConfig;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,6 +26,7 @@ public class NicknameListener {
         if (config.isDebug()) e.player.sendMessage(new StringTextComponent("[Debug] SetNicknameEvent Triggered! " + e.player.getName().getString() + "'s " + e.pokemon.getSpecies().getName() + " changed to: " + e.nickname), Util.NIL_UUID);
 
         if (!e.pokemon.hasFlag("unnickable")) {
+            if (e.nickname.equals("")) e.nickname = e.pokemon.getSpecies().getLocalizedName();
             for (String s : config.getNicknameBlacklist()) {
                 if (config.isDebug()) e.player.sendMessage(new StringTextComponent("Checking regex: " + s), Util.NIL_UUID);
                 Pattern pattern = Pattern.compile(s);
