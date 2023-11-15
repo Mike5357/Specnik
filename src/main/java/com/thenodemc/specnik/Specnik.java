@@ -15,8 +15,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,10 +28,10 @@ public class Specnik {
     Logger logger = LogManager.getLogger("specnik");
 
     public Specnik() {
+        Pixelmon.EVENT_BUS.register(this);
         Pixelmon.EVENT_BUS.register(new NicknameListener());
         Pixelmon.EVENT_BUS.register(new EvolveListener());
         Pixelmon.EVENT_BUS.register(new PokemonReceivedListener());
-//        Pixelmon.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -46,11 +44,6 @@ public class Specnik {
     public void registerCommand(RegisterCommandsEvent event) {
         new SpecnikCommand(event.getDispatcher());
     }
-//
-//
-//    @SubscribeEvent
-//    public void onInit(FMLServerStartingEvent event) {
-//    }
 
     @SubscribeEvent
     public void onServerStarting(FMLServerAboutToStartEvent event) {

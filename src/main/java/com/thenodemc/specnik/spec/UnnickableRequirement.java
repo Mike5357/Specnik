@@ -9,7 +9,7 @@ import com.pixelmonmod.pixelmon.entities.pixelmon.PixelmonEntity;
 import java.util.Set;
 
 public class UnnickableRequirement extends AbstractBooleanPokemonRequirement {
-    private static final Set<String> KEYS = Sets.newHashSet(new String[]{"unnickable"});
+    private static final Set<String> KEYS = Sets.newHashSet("unnickable");
 
     public UnnickableRequirement() {
         super(KEYS);
