@@ -5,8 +5,8 @@ import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.events.pokemon.SetNicknameEvent;
 import com.pixelmonmod.pixelmon.api.util.helpers.PlayerHelper;
 import com.thenodemc.specnik.Specnik;
+import com.thenodemc.specnik.Utils;
 import com.thenodemc.specnik.config.SpecnikConfig;
-import net.minecraft.util.StringUtils;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,16 +46,18 @@ public class NicknameListener {
                     if (config.isDebug())
                         e.player.sendMessage(new StringTextComponent("[Debug] §a✔ Pokemon matches specs: " + spec), Util.NIL_UUID);
                     if (nicknameSetting.isPlayerEditingAllowed()) {
+                        if (e.nickname.contains("&") && !PlayerHelper.hasPermission(e.player,"specnik.colors")) {
+                            e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("colors-not-allowed")), Util.NIL_UUID);
+                            e.setCanceled(true);
+                            return;
+                        }
                         e.nickname = config.replacePlaceholders(nicknameSetting.getName(), e.pokemon).replaceAll("%nickname%", e.nickname);
                         if (config.isNotifyModified())
                             e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("notify-modified-message").replaceAll("%nickname%", e.nickname)), Util.NIL_UUID);
+                        e.nickname = Utils.parseLegacyToHex(e.nickname);
                     } else {
                         e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("editing-not-allowed-message")), Util.NIL_UUID);
                         e.setCanceled(true);
-                    }
-                    if (e.nickname.contains("&") && !PlayerHelper.hasPermission(e.player,"specnik.colors")) { // Does not work
-                        e.nickname = StringUtils.stripColor(e.nickname);
-                        e.player.sendMessage(new StringTextComponent(config.getLangSettings().get("colors-not-allowed")), Util.NIL_UUID);
                     }
                     return;
                 }
