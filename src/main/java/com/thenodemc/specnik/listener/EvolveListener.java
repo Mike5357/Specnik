@@ -21,20 +21,6 @@ public class EvolveListener {
         SpecnikConfig config = Specnik.instance.getConfig();
         if (config.isDebug()) e.getPlayer().sendMessage(new StringTextComponent("[Debug] EvolveEvent Triggered for " + e.getPlayer().getName().getString() + "'s " + e.getPokemon().getSpecies().getName()), Util.NIL_UUID);
 
-        for (SpecnikConfig.NicknameSetting nicknameSetting : config.getForceNicknames().values()) {
-            for (PokemonSpecification spec : nicknameSetting.getSpecsToMatch()) {
-                if (!spec.matches(e.getPokemon())) {
-                    break;
-                }
-                if (config.isDebug())
-                    e.getPlayer().sendMessage(new StringTextComponent("[Debug] §a✔ Pokemon matches specs: " + spec), Util.NIL_UUID);
-                if (nicknameSetting.isUpdateOnEvolve()) {
-                    e.getPokemon().setNickname(new StringTextComponent(Utils.parseLegacyToHex(config.replacePlaceholders(nicknameSetting.getName(), e.getPokemon()).replaceAll("%nickname%", e.getPokemon().getSpecies().getLocalizedName()))));
-                    if (config.isNotifyModified())
-                        e.getPlayer().sendMessage(new StringTextComponent(config.getLangSettings().get("notify-modified-message").replaceAll("%nickname%", e.getPokemon().getFormattedNickname().getString())), Util.NIL_UUID);
-                }
-                return;
-            }
         if (e.getEntity() != null) {
             for (SpecnikConfig.NicknameSetting nicknameSetting : config.getForceNicknames().values()) {
                 for (PokemonSpecification spec : nicknameSetting.getSpecsToMatch()) {
