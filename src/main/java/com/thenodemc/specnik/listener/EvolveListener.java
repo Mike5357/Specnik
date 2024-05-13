@@ -35,6 +35,25 @@ public class EvolveListener {
                 }
                 return;
             }
+        if (e.getEntity() != null) {
+            for (SpecnikConfig.NicknameSetting nicknameSetting : config.getForceNicknames().values()) {
+                for (PokemonSpecification spec : nicknameSetting.getSpecsToMatch()) {
+                    if (!spec.matches(e.getPokemon())) {
+                        break;
+                    }
+                    if (config.isDebug())
+                        e.getPlayer().sendMessage(new StringTextComponent("[Debug] §a✔ Pokemon matches specs: " + spec), Util.NIL_UUID);
+                    if (nicknameSetting.isUpdateOnEvolve()) {
+                        e.getPokemon().setNickname(new StringTextComponent(Utils.parseLegacyToHex(config.replacePlaceholders(nicknameSetting.getName(), e.getPokemon()).replaceAll("%nickname%", e.getPokemon().getSpecies().getLocalizedName()))));
+                        if (config.isNotifyModified())
+                            e.getPlayer().sendMessage(new StringTextComponent(config.getLangSettings().get("notify-modified-message").replaceAll("%nickname%", e.getPokemon().getFormattedNickname().getString())), Util.NIL_UUID);
+                    }
+                    return;
+                }
+            }
+        } else {
+            if (config.isDebug())
+                e.getPlayer().sendMessage(new StringTextComponent("[Debug] EvolveEvent Pokemon entity was null- could not process update."), Util.NIL_UUID);
         }
     }
 }

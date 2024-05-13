@@ -20,7 +20,9 @@ Specnik can:
 - Pixelmon Reforged (built for 9.1.0)
 
 # Permissions
-There are no permissions associated with this plugin.
+```yaml
+specnik.colors # Allows the use of & color codes in player-edited nicknames to be parsed
+```
 
 # Configuration
 Please [refer to the Wiki](https://github.com/Mike5357/Specnik/wiki) for information on how to configure this plugin, including examples and available placeholders.
