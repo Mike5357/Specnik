@@ -1,42 +1,47 @@
 package com.thenodemc.specnik.command;
 
-import com.google.common.collect.Lists;
 import com.mojang.brigadier.CommandDispatcher;
-import com.pixelmonmod.pixelmon.comm.CommandChatHandler;
-import com.pixelmonmod.pixelmon.command.PixelCommand;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.thenodemc.specnik.Specnik;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.CommandSource;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.network.chat.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-public class SpecnikCommand extends PixelCommand {
+public class SpecnikCommand {
 
-    private static final ArrayList<String> TAB_COMPLETIONS = Lists.newArrayList("reload");
-
-    public SpecnikCommand(CommandDispatcher<CommandSource> dispatcher) {
-        super(dispatcher, "specnik",TextFormatting.RED + "/specnik reload",2);
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(
+                Commands.literal("specnik")
+                        .requires(source -> source.hasPermission(2))
+                        .then(Commands.argument("subcommand", StringArgumentType.word())
+                                .suggests((context, builder) -> getSubcommandSuggestions(builder))
+                                .executes(context -> {
+                                    String subcommand = StringArgumentType.getString(context, "subcommand");
+                                    if (subcommand.equalsIgnoreCase("reload")) {
+                                        Specnik.getInstance().loadConfig();
+                                        context.getSource().sendSuccess(
+                                                () -> Component.literal("Config reloaded.").withStyle(ChatFormatting.GREEN),
+                                                false
+                                        );
+                                        return 1;
+                                    } else {
+                                        context.getSource().sendFailure(
+                                                Component.literal("Invalid subcommand. Try: /specnik reload")
+                                        );
+                                        return 0;
+                                    }
+                                })
+                        )
+        );
     }
 
-    @Override
-    public void execute(CommandSource sender, String[] args) throws CommandException {
-        if (args.length == 0) {
-            CommandChatHandler.sendChat(sender, TextFormatting.RED + getUsage(sender));
-        } else if (args[0].equalsIgnoreCase("reload")) {
-            Specnik.instance.loadConfig();
-            CommandChatHandler.sendChat(sender, TextFormatting.GREEN + "Config reloaded.");
-        } else {
-            CommandChatHandler.sendChat(sender, TextFormatting.RED + "Invalid syntax. "+ getUsage(sender));
-        }
+    private static CompletableFuture<Suggestions> getSubcommandSuggestions(SuggestionsBuilder builder) {
+        return SharedSuggestionProvider.suggest(new String[]{"reload"}, builder);
     }
-
-    @Override
-    public List<String> getTabCompletions(MinecraftServer server, CommandSource sender, String[] args, BlockPos pos) {
-        return TAB_COMPLETIONS;
-    }
-
 }

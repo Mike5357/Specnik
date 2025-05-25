@@ -10,7 +10,6 @@ public class Utils {
 
         Matcher regexMatcher = regex.matcher(message);
 
-        // Requires Java 9+
         if (regexMatcher.find()) {
             message = regexMatcher.replaceAll(
                     m -> m.group().replaceAll("§x","&#").replaceAll("§","")

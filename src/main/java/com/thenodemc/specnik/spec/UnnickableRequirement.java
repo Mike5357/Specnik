@@ -1,6 +1,7 @@
 package com.thenodemc.specnik.spec;
 
 import com.google.common.collect.Sets;
+import com.pixelmonmod.api.parsing.ParseAttempt;
 import com.pixelmonmod.api.pokemon.requirement.AbstractBooleanPokemonRequirement;
 import com.pixelmonmod.api.requirement.Requirement;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
@@ -19,19 +20,19 @@ public class UnnickableRequirement extends AbstractBooleanPokemonRequirement {
         super(KEYS, value);
     }
 
-    public Requirement<Pokemon, PixelmonEntity, Boolean> createInstance(Boolean value) {
-        return new UnnickableRequirement(value);
+    public ParseAttempt<Requirement<Pokemon, PixelmonEntity, Boolean>> createInstance(Boolean value) {
+        return ParseAttempt.success(new UnnickableRequirement(value));
     }
 
     public boolean isDataMatch(Pokemon pixelmon) {
-        return pixelmon.hasFlag("unnickable") == this.value;
+        return (pixelmon.hasFlag("unnickable") == this.value || pixelmon.getPersistentData().contains("unnickable") == this.value);
     }
 
     public void applyData(Pokemon pixelmon) {
         if (this.value) {
-            pixelmon.addFlag("unnickable");
+            pixelmon.getPersistentData().putBoolean("unnickable", true); // Use tags instead of flags so they don't appear under the Pokemon's name
         } else {
-            pixelmon.removeFlag("unnickable");
+            pixelmon.getPersistentData().remove("unnickable");
         }
 
     }

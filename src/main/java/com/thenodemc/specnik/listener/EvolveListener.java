@@ -6,9 +6,9 @@ import com.pixelmonmod.pixelmon.api.events.EvolveEvent;
 import com.thenodemc.specnik.Specnik;
 import com.thenodemc.specnik.Utils;
 import com.thenodemc.specnik.config.SpecnikConfig;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+import net.neoforged.bus.api.SubscribeEvent;
 
 public class EvolveListener {
 
@@ -19,27 +19,39 @@ public class EvolveListener {
     @SubscribeEvent
     public void onPostEvolveEvent(EvolveEvent.Post e) {
         SpecnikConfig config = Specnik.instance.getConfig();
-        if (config.isDebug()) e.getPlayer().sendMessage(new StringTextComponent("[Debug] EvolveEvent Triggered for " + e.getPlayer().getName().getString() + "'s " + e.getPokemon().getSpecies().getName()), Util.NIL_UUID);
-
-        if (e.getEntity() != null) {
+        Player player = e.getPlayer();
+        if (player == null) return;
+        if (config.isDebug()) {
+            player.sendSystemMessage(Component.literal("[Debug] EvolveEvent Triggered for " + player.getName().getString() + "'s " + e.getPokemon().getSpecies().getName()));
+        }
+        if (e.getPokemon() != null) {
             for (SpecnikConfig.NicknameSetting nicknameSetting : config.getForceNicknames().values()) {
                 for (PokemonSpecification spec : nicknameSetting.getSpecsToMatch()) {
                     if (!spec.matches(e.getPokemon())) {
                         break;
                     }
-                    if (config.isDebug())
-                        e.getPlayer().sendMessage(new StringTextComponent("[Debug] §a✔ Pokemon matches specs: " + spec), Util.NIL_UUID);
+                    if (config.isDebug()) {
+                        player.sendSystemMessage(Component.literal("[Debug] §a✔ Pokemon matches specs: " + spec));
+                    }
+
                     if (nicknameSetting.isUpdateOnEvolve()) {
-                        e.getPokemon().setNickname(new StringTextComponent(Utils.parseLegacyToHex(config.replacePlaceholders(nicknameSetting.getName(), e.getPokemon()).replaceAll("%nickname%", e.getPokemon().getSpecies().getLocalizedName()))));
-                        if (config.isNotifyModified())
-                            e.getPlayer().sendMessage(new StringTextComponent(config.getLangSettings().get("notify-modified-message").replaceAll("%nickname%", e.getPokemon().getFormattedNickname().getString())), Util.NIL_UUID);
+                        String newName = Utils.parseLegacyToHex(config.replacePlaceholders(
+                                nicknameSetting.getName(), e.getPokemon()
+                        ).replaceAll("%nickname%", e.getPokemon().getSpecies().getTranslatedName().getString()));
+                        e.getPokemon().setNickname(Component.literal(newName));
+                        if (config.isNotifyModified()) {
+                            String msg = config.getLangSettings().get("notify-modified-message")
+                                    .replaceAll("%nickname%", e.getPokemon().getNickname().getString());
+                            player.sendSystemMessage(Component.literal(msg));
+                        }
                     }
                     return;
                 }
             }
         } else {
-            if (config.isDebug())
-                e.getPlayer().sendMessage(new StringTextComponent("[Debug] EvolveEvent Pokemon entity was null- could not process update."), Util.NIL_UUID);
+            if (config.isDebug()) {
+                player.sendSystemMessage(Component.literal("[Debug] EvolveEvent Pokemon entity was null - could not process update."));
+            }
         }
     }
 }
